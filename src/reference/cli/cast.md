@@ -7,7 +7,7 @@ $ cast --help
 ```
 
 ```txt
-Usage: cast <COMMAND>
+Usage: cast [OPTIONS] <COMMAND>
 
 Commands:
   4byte                  Get the function signatures for the given selector from
@@ -17,8 +17,6 @@ Commands:
   4byte-event            Get the event signature for a given topic 0 from
                          https://openchain.xyz [aliases: 4e, 4be, topic0-event,
                          t0e]
-  abi-decode             Decode ABI-encoded input or output data [aliases: ad,
-                         --abi-decode]
   abi-encode             ABI encode the given function argument, excluding the
                          selector [aliases: ae]
   access-list            Create an access list for a transaction [aliases: ac,
@@ -26,6 +24,8 @@ Commands:
   address-zero           Prints the zero address [aliases: --address-zero, az]
   admin                  Fetch the EIP-1967 admin account [aliases: adm]
   age                    Get the timestamp of a block [aliases: a]
+  artifact               Generate an artifact file, that can be used to deploy a
+                         contract locally [aliases: ar]
   balance                Get the balance of an account in wei [aliases: b]
   base-fee               Get the basefee of a block [aliases: ba, fee, basefee]
   bind                   Generate a rust binding from a given ABI [aliases: bi]
@@ -34,8 +34,6 @@ Commands:
   call                   Perform a call on an account without publishing a
                          transaction [aliases: c]
   calldata               ABI-encode a function with arguments [aliases: cd]
-  calldata-decode        Decode ABI-encoded input data [aliases:
-                         --calldata-decode, cdd]
   chain                  Get the symbolic name of the current chain
   chain-id               Get the Ethereum chain ID [aliases: ci, cid]
   client                 Get the current client version [aliases: cl]
@@ -47,13 +45,27 @@ Commands:
   compute-address        Compute the contract address from a given nonce and
                          deployer address [aliases: ca]
   concat-hex             Concatenate hex strings [aliases: --concat-hex, ch]
+  constructor-args       Display constructor arguments used for the contract
+                         initialization [aliases: cra]
   create2                Generate a deterministic contract address using CREATE2
                          [aliases: c2]
+  creation-code          Download a contract creation code from Etherscan and
+                         RPC [aliases: cc]
+  decode-abi             Decode ABI-encoded input or output data [aliases:
+                         abi-decode, --abi-decode, ad]
+  decode-calldata        Decode ABI-encoded input data [aliases:
+                         calldata-decode, --calldata-decode, cdd]
   decode-eof             Decodes EOF container bytes
+  decode-error           Decode custom error data [aliases: error-decode,
+                         --error-decode, erd]
+  decode-event           Decode event data [aliases: event-decode,
+                         --event-decode, ed]
+  decode-string          Decode ABI-encoded string [aliases: string-decode,
+                         --string-decode, sd]
   decode-transaction     Decodes a raw signed EIP 2718 typed transaction
                          [aliases: dt, decode-tx]
-  disassemble            Disassembles hex encoded bytecode into individual /
-                         human readable opcodes [aliases: da]
+  disassemble            Disassembles a hex-encoded bytecode into a
+                         human-readable representation [aliases: da]
   estimate               Estimate the gas cost of a transaction [aliases: e]
   etherscan-source       Get the source code of a contract from Etherscan
                          [aliases: et, src]
@@ -61,6 +73,8 @@ Commands:
                          [aliases: f]
   format-bytes32-string  Formats a string into bytes32 encoding [aliases:
                          --format-bytes32-string]
+  format-units           Format a number from smallest unit to decimal with
+                         arbitrary decimals [aliases: --format-units, fun]
   from-bin               Convert binary data into hex data [aliases: --from-bin,
                          from-binx, fb]
   from-fixed-point       Convert a fixed point number into an integer [aliases:
@@ -77,8 +91,9 @@ Commands:
   hash-zero              Prints the zero hash [aliases: --hash-zero, hz]
   help                   Print this message or the help of the given
                          subcommand(s)
-  implementation         Fetch the EIP-1967 implementation account [aliases:
-                         impl]
+  implementation         Fetch the EIP-1967 implementation for a contract Can
+                         read from the implementation slot or the beacon slot
+                         [aliases: impl]
   index                  Compute the storage slot for an entry in a mapping
                          [aliases: in]
   index-erc7201          Compute storage slots as specified by `ERC-7201:
@@ -102,6 +117,8 @@ Commands:
                          [aliases: --parse-bytes32-address]
   parse-bytes32-string   Parses a string from bytes32 encoding [aliases:
                          --parse-bytes32-string]
+  parse-units            Convert a number from decimal to smallest unit with
+                         arbitrary decimals [aliases: --parse-units, pun]
   pretty-calldata        Pretty print calldata [aliases: pc]
   proof                  Generate a storage proof for a given storage slot
                          [aliases: pr]
@@ -158,8 +175,47 @@ Commands:
   wallet                 Wallet management utilities [aliases: w]
 
 Options:
-  -h, --help     Print help
-  -V, --version  Print version
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
+
+  -V, --version
+          Print version
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 
 Find more information in the book:
 http://book.getfoundry.sh/reference/cast/cast.html

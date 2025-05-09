@@ -30,7 +30,7 @@ Options:
           
           [default: 10000]
 
-      --config-out <OUT_FILE>
+      --config-out <FILE>
           Writes output of `anvil` as json to user-specified file
 
       --derivation-path <DERIVATION_PATH>
@@ -51,8 +51,8 @@ Options:
       --hardfork <HARDFORK>
           The EVM hardfork to use.
           
-          Choose the hardfork by name, e.g. `shanghai`, `paris`, `london`,
-          etc... [default: latest]
+          Choose the hardfork by name, e.g. `cancun`, `shanghai`, `paris`,
+          `london`, etc... [default: latest]
 
       --init <PATH>
           Initialize the genesis block with the given `genesis.json` file
@@ -62,6 +62,12 @@ Options:
           `/tmp/anvil.ipc`
           
           [aliases: ipcpath]
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
 
       --load-state <PATH>
           Initialize the chain from a previously saved state snapshot
@@ -128,9 +134,6 @@ Options:
           
           See --state and --dump-state
 
-      --silent
-          Don't print anything on startup and don't print logs
-
       --slots-in-an-epoch <SLOTS_IN_AN_EPOCH>
           Slots in an epoch
           
@@ -151,11 +154,44 @@ Options:
   -V, --version
           Print version
 
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
+
 Server options:
       --allow-origin <ALLOW_ORIGIN>
           The cors `allow_origin` header
           
           [default: *]
+
+      --cache-path <PATH>
+          Path to the cache directory where states are stored
 
       --host <IP_ADDR>
           The hosts the server will listen on
@@ -268,6 +304,11 @@ Environment config:
       --disable-code-size-limit
           Disable EIP-170: Contract code size limit
 
+      --disable-min-priority-fee
+          Disable the enforcement of a minimum suggested priority fee
+          
+          [aliases: no-priority-fee]
+
       --gas-limit <GAS_LIMIT>
           The block gas limit
 
@@ -275,15 +316,12 @@ Environment config:
           The gas price
 
 EVM options:
-      --alphanet
-          Enable Alphanet features
-          
-          [aliases: alphanet]
-
       --auto-impersonate
-          Enable autoImpersonate on startup
+          Enables automatic impersonation on startup. This allows any
+          transaction sender to be simulated as different accounts, which is
+          useful for testing contract behavior
           
-          [aliases: auto-impersonate]
+          [aliases: auto-unlock]
 
       --disable-console-log
           Disable printing of `console.log` invocations to stdout
@@ -297,6 +335,9 @@ EVM options:
 
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes
+
+      --odyssey
+          Enable Odyssey features
 
       --optimism
           Run an Optimism chain

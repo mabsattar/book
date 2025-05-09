@@ -49,15 +49,17 @@ Options:
           
           Can also be the tags earliest, finalized, safe, latest, or pending.
 
-      --alphanet
-          Enable Alphanet features
+      --odyssey
+          Enable Odyssey features
 
   -h, --help
           Print help (see a summary with '-h')
 
-Display options:
-  -j, --json
-          Print the decoded output as JSON
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
 
 Transaction options:
       --gas-limit <GAS_LIMIT>
@@ -142,6 +144,21 @@ Ethereum options:
           
           [env: ETH_RPC_JWT_SECRET=]
 
+      --rpc-timeout <RPC_TIMEOUT>
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
+
+      --rpc-headers <RPC_HEADERS>
+          Specify custom headers for RPC requests
+          
+          [env: ETH_RPC_HEADERS=]
+
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
           
@@ -182,6 +199,11 @@ Wallet options - raw:
           
           [default: 0]
 
+      --with-local-artifacts
+          Use current project artifacts for trace decoding
+          
+          [aliases: la]
+
 Wallet options - keystore:
       --keystore <PATH>
           Use the keystore in the given folder or file
@@ -216,4 +238,34 @@ Wallet options - hardware wallet:
 Wallet options - remote:
       --aws
           Use AWS Key Management Service
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 ```
